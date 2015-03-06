@@ -1,0 +1,213 @@
+<html>
+<head>
+    <title>Shell Game</title>
+    <link href="style.css" media="all" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <script src="jquery-1.10.2.js"></script>
+</head>
+<body>
+    <!--<h2>Shell Game</h2>-->
+    <div id="logo"></div>
+    
+    <div class="player_select">
+        <ul id="players"></ul>
+        <input type="text" id="name" userplate="Player's Name"/>
+        <button onclick="addPlayer();">Add Player</button>
+    </div>
+    
+    <div class="game">
+        <div class="box" id="b1"></div>
+        <div class="box" id="b2"></div>
+        <div class="box" id="b3"></div>
+    </div>
+    
+    <center>
+        <button id="start" class="btn" onclick="start()">Start</button>
+        <button id="check" class="btn" onclick="$('.rezultate').show();">Afiseaza Rezultate</button>
+    </center>
+    
+    <div class="rezultate">
+        <h3>Rezultate</h3>
+        <ul id="results">
+            
+        </ul>
+    </div>
+</body>
+    
+<script>
+    
+    var stopped = false, started = false, tried = false;
+    
+    $(document).ready(function() {
+        $(".game").hide();
+        $("#check").hide();
+    });
+    
+    $("#name").keypress(function( event ) {
+        if(event.which == 13){
+            addPlayer();
+            event.preventDefault();
+        }
+    });
+    
+    function write(){
+        var n = $("#players > li").length;
+        for(i = 1; i <= n; i++){
+            var person = $('li[data-id="' + i + '"]');
+            var name = person.attr("data-name");
+            var result = person.attr("data-result");
+            var value = person.attr("data-value");
+            var balance = person.attr("data-money");
+            
+            if(result == "won") var html = '<li>' + name + ' a castigat ' + value + '$, acum are ' + balance + '$</li>';
+            else var html = '<li>' + name + ' a pierdut ' + value + '$, acum are ' + balance + '$</li>';
+            
+            $("#results").append(html);
+        }
+        
+        $("#results").append("<hr />");
+    }
+    
+    function addPlayer(){
+        var name = $("#name").val();
+        if(name != ""){
+            var playerid = $("#players > li").length + 1;
+        
+            var ul = $("#players");
+            var html = '<li data-id="' + playerid + '" data-money="50" data-name="' + name + '"><b>' + name + '</b> are 50$</li>';
+
+            $("#name").val("");
+            ul.append(html);
+        }
+    }
+    
+    function bet(pid){
+        if(started == true && stopped == true){
+            var person = $('li[data-id="' + i + '"]');
+            var name = person.attr("data-name");
+            var balance = parseInt(person.attr("data-money"));
+            var value = 0, choice = 0;
+            
+            if(balance != 0){
+                value = prompt("Jucator " + name + ", Suma Pariu: ");
+                while(isNaN(value) || value <= 0 || value > balance){
+                    if(value == 0) value = prompt("Nu poti juca pe gratis. Introdu alta valoare:");
+                    else if(value < 0) value = prompt("Nu poti da o valoare negativa. Introdu alta valoare:");
+                    else if(value > balance) value = prompt("Nu poti da o valoare mai mare decat ai. Introdu alta valoare:");
+                    else value = prompt("Valoarea data nu este un numar: ");
+                }
+
+                choice = prompt("Jucator " + name + ", Numar Pahar: ");
+                while(choice != 3 && choice != 2 && choice != 1) choice = prompt("Numar nepermis, mai incearca o data: ");
+
+
+                var person = $('li[data-id="' + pid + '"]');
+                
+            }
+            
+            person.attr("data-value", value);
+            person.attr("data-choice", choice);
+        }
+    }
+    
+    function check(){
+        var n = $("#players > li").length;
+        for(i = 1; i <= n; i++){
+            var person = $('li[data-id="' + i + '"]');
+            var choice = person.attr("data-choice");
+            var balance = parseInt(person.attr("data-money"));
+            var value = parseInt(person.attr("data-value"));
+            
+            var box = $("#b" + choice);
+            var message = box.has("#ball").length ? "won" : "lost";
+            
+            if(message == "won") balance = balance + value;
+            else balance = balance - value;
+                
+            person.attr("data-money", balance);
+            person.attr("data-result", message);
+        }
+    }
+    
+    function random(){
+        return Math.floor((Math.random() * 3) + 1);
+    }
+    
+    function initBall(){
+        var ball = '<div id="ball"></div>';
+        var num = random();
+        $("#b" + num).append(ball);
+    }
+    
+    function animateUs(first, second, nr){
+        var position1 = $("#b" + first).position().left;
+        var position2 = $("#b" + second).position().left;
+        
+        var fg = $("#b" + first);
+        var sg = $("#b" + second);
+        
+        moveMe("#b" + first, position2 + "px");
+        moveMe("#b" + second, position1 + "px");
+        
+        fg.attr("id", "b" + second);
+        sg.attr("id", "b" + first);
+        
+        setTimeout(function(){
+            amesteca(nr - 1);
+        }, 500);
+    }
+    
+    function moveMe(who, stringie){
+        $(who).animate({
+            left: stringie,
+        }, 350);
+    }
+    
+    function amesteca(nr) {
+        var x = Math.floor((Math.random() * 3) + 1);
+        var y= Math.floor((Math.random() * 3) + 1);
+        while (x==y) x = Math.floor((Math.random() * 3) + 1);  
+        
+        if(nr != 0) animateUs(x, y, nr);
+        else {
+            stopped = true;
+            
+            var n = $("#players > li").length;
+            for(i = 1; i <= n; i++) bet(i);
+            
+            $("#check").show();
+            $("#start").show();
+            $("#ball").show();
+            check();
+            write();
+        }
+    }
+    
+    function start() {
+        var n = $("#players > li").length;
+
+        if(n != 0){
+            stopped = false;
+            started = true;
+            tried = false;
+
+            $(".game").show();
+            $("#start").hide();
+            $("#check").hide();
+            $(".player_select").hide();
+            $(".rezultate").hide();
+            
+            var nr = Math.floor((Math.random() * 10) + 1);
+            $("#ball").remove();
+            initBall();
+            
+            setTimeout(function(){
+                $("#ball").hide();
+                amesteca(nr);
+            },2500);
+            
+        }else alert("Nu exista jucatori!");
+    }
+</script>    
+
+</html>

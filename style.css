@@ -1,0 +1,138 @@
+html, body {
+    padding:0;
+    margin:0;
+    
+    background:#222;
+    font-family: "Open Sans", sans-serif;
+    overflow:hidden;
+}
+
+h2 {
+    margin-top:25px;
+    font-size:64px;
+    text-align: center;
+    color:#2D0003;
+}
+
+#logo {
+    background: url(images/sign.png) no-repeat;
+    width:420px;
+    height:275px;
+    margin:auto;
+}
+
+.game {
+    width:800px;
+    height:250px;
+    margin:0 300px;
+    padding:0;
+    position: absolute;
+    /*background: #8C6429;*/
+    background: url(images/wood2.jpg);
+    background-size: 800px;
+    border-radius: 10px;
+    padding-top: 40px;
+}
+
+.box {
+    background:url('images/canuta.png') top center no-repeat;
+    background-size: 150px 200px;
+    width:200px;
+    height:200px;
+    position: absolute;
+    top:50px;
+}
+
+#b1 {left:50px;}
+#b2 {left:300px;}
+#b3 {left:550px;}
+
+#ball {
+    background:url('images/biluta.png') top center no-repeat;
+    background-size: 50px 40px;
+    width:50px;
+    height:40px;
+    display: block;
+    margin:auto;
+    position: relative;
+    top:80px;
+    left:4px;
+}
+
+.rezultate, .player_select {
+    background:url(images/wood2.jpg);
+    background-size:400px;
+    box-shadow:inset 0px 0px 20px rgba(0,0,0,0.5);
+    border:1px solid rgba(0,0,0,0.5);
+    border-radius:4px;
+    padding:10px;
+    width:300px;
+    margin:auto;
+    position: relative;
+}
+
+.rezultate {
+    background: rgba(255,255,255,0.2);
+    display: none;
+    top:-350px;
+}
+
+li {
+    list-style-type: none;
+}
+
+ul {padding:0; margin-left:5px;}
+
+#start, #check {
+    width:210px;
+    height:40px;
+    border:1px solid #111;
+    margin:50px auto;
+    /*
+    width:200px;
+    height:36px;
+    border-radius:3px;
+    background:#CCC;
+    border:1px solid #999;
+    color:#000;
+    margin:50px auto;
+    */
+}
+
+#check { margin-top:300px; }
+
+hr {
+    position: relative;
+    left: -10px;
+    background: rgba(0,0,0,0.2);
+    height: 1px;
+    border: none;
+    border-top: 1px solid #EEE;
+}
+
+.btn {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 3;
+  -moz-border-radius: 3;
+  border-radius: 3px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
